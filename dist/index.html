@@ -1,0 +1,45 @@
+<!doctype html>
+<html ng-app="piwik-fe-app">
+<head>
+<meta charset="utf8" />
+<title>AngularJS Tutorial</title>
+<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" />
+<link rel="stylesheet" href="css/datepicker.css" type="text/css" />
+<link rel="stylesheet" href="css/main.css" type="text/css" />
+
+</head>
+<body>
+
+
+<form>
+	<fieldset>
+		<legend translate="CHOOSE_DATE"></legend>
+		<label translate="START_DATE"></label><input type="text" ng-model="startdate" class="datepicker" />
+		<label>End Date</label><input type="text" ng-model="enddate" class="datepicker" />
+		<label>Website</label>
+		<select ng-model="piwikid" ng-controller="SettingsCtrl">
+			<option value="{{page.id}}" ng-repeat="page in settings.allPiwikPages">{{page.name}}</option>
+		</select>
+		<label>Segmente</label>
+		<select ng-model="segmentid" ng-controller="SettingsCtrl">
+			<option value="{{segment.id}}" ng-repeat="segment in settings.allSegments">{{segment.name}}</option>
+		</select>
+		<label>Sprache</label>
+		<select ng-controller="LangCtrl" ng-model="lang">
+			<option value="de_DE">German</option>
+			<option value="en_US">Englisch</option>
+		</select>
+	</fieldset>
+</form>
+
+s: {{startdate}} <br>
+e: {{enddate}} <br>
+pid: {{piwikid}} <br>
+sid: {{segmentid}}
+
+test
+
+<script src="/js/bundle.js"></script>
+
+</body>
+</html>
