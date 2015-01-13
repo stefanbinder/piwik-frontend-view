@@ -7,6 +7,7 @@ var gulp = require('gulp'),
     rimraf = require('gulp-rimraf'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
+    bower = require('gulp-bower'),
     plugins = require("gulp-load-plugins")({
       pattern: ['gulp-*', 'gulp.*', 'main-bower-files'],
       replaceString: /\bgulp[\-.]/
@@ -30,6 +31,10 @@ server.use(express.static('./dist'));
 server.all('/*', function(req, res) {
   res.sendfile('index.html', { root: 'dist' });
 });
+
+var config = {
+     bowerDir: './src/lib/' 
+}
 
 // Dev task
 gulp.task('dev', ['clean', 'views', 'styles', 'lint', 'browserify'], function() { });
@@ -58,18 +63,8 @@ gulp.task('styles', function() {
   .pipe(gulp.dest('dist/css/'));
 });
 
-// Browserify task
-gulp.task('browserify', function() {
-  // Single point of entry (make sure not to src ALL your files, browserify will figure it out)
-  gulp.src(['src/js/**/*.js'])
-  .pipe(browserify({
-    insertGlobals: true,
-    debug: false
-  }))
-  // Bundle to a single file
-  .pipe(concat('bundle.js'))
-  // Output it to our dist folder
-  .pipe(gulp.dest('dist/js'));
+gulp.task('scripts', function() {
+  
 });
 
 // Views task
@@ -83,6 +78,11 @@ gulp.task('views', function() {
   gulp.src('src/views/**/*')
   // Will be put in the dist/views folder
   .pipe(gulp.dest('dist/views/'));
+});
+
+gulp.task('bower', function() {
+  return bower()
+    .pipe(gulp.dest('dist/lib/'))
 });
 
 gulp.task('watch', ['lint'], function() {
@@ -110,4 +110,4 @@ gulp.task('watch', ['lint'], function() {
 
 });
 
-gulp.task('default', ['dev', 'watch']);
+gulp.task('default', ['bower', 'dev', 'watch']);
