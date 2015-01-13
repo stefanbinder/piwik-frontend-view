@@ -37,7 +37,7 @@ var config = {
 }
 
 // Dev task
-gulp.task('dev', ['clean', 'views', 'styles', 'lint', 'browserify'], function() { });
+gulp.task('dev', ['clean', 'views', 'styles', 'lint'], function() { });
 
 // Clean task
 gulp.task('clean', function() {
@@ -64,7 +64,7 @@ gulp.task('styles', function() {
 });
 
 gulp.task('scripts', function() {
-  
+
 });
 
 // Views task
