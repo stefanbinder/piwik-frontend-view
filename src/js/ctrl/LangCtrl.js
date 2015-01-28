@@ -1,6 +1,7 @@
 'use strcit';
 
-var LangCtrl = function($scope, $translate) {
+
+piwikapp.controller('LangCtrl', ['$scope', '$translate', function($scope, $translate) {
 	$scope.lang = "de_DE";
 
     $scope.$watch('lang', function(newval, oldval){
@@ -9,6 +10,4 @@ var LangCtrl = function($scope, $translate) {
     $scope.changeLang = function (key) {
       $scope.lang = key;
     };
-}
-
-module.exports = LangCtrl;
+}]);

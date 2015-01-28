@@ -1,3 +1,44 @@
-body {background-color: #ccc; }
+body {background-color: #fff; padding: 10px;}
 
 label { margin-right: 5px; }
+
+.input-group {
+	float: left;
+	display: block;
+	width: 20%;
+}
+input.form-control {
+	width: 100px !important;
+	float: left;
+}
+
+.input-group label {
+	float: left;
+	margin-top: 7px;
+}
+.input-group select {
+	float: left;
+	margin: 5px 10px;
+}
+
+iframe {
+	border: 0px;
+}
+
+h1.headline {
+	font-size: 16pt;
+	font-weight: bold;
+	float: left;
+	margin: 0px 30px 0px 0px;
+}
+
+.tab-content {
+	margin-top: 20px;
+}
+
+.backLink {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	
+}

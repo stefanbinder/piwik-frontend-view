@@ -37,7 +37,7 @@ var config = {
 }
 
 // Dev task
-gulp.task('dev', ['clean', 'views', 'styles', 'lint'], function() { });
+gulp.task('dev', ['clean', 'scripts', 'views', 'styles', 'lint'], function() { });
 
 // Clean task
 gulp.task('clean', function() {
@@ -55,29 +55,18 @@ gulp.task('lint', function() {
 // Styles task
 gulp.task('styles', function() {
   gulp.src('src/css/*.css')
-  // The onerror handler prevents Gulp from crashing when you make a mistake in your SASS
-  // .pipe(sass({onError: function(e) { console.log(e); } }))
-  // Optionally add autoprefixer
-  // .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 8'))
-  // These last two should look familiar now :)
   .pipe(gulp.dest('dist/css/'));
 });
 
 gulp.task('scripts', function() {
-
+  gulp.src('src/js/**/*.js')
+  .pipe(gulp.dest('dist/js'));
 });
 
 // Views task
 gulp.task('views', function() {
-  // Get our index.html
-  gulp.src('src/index.html')
-  // And put it in the dist folder
+  gulp.src('src/**/*.html')
   .pipe(gulp.dest('dist/'));
-
-  // Any other view files from src/views
-  gulp.src('src/views/**/*')
-  // Will be put in the dist/views folder
-  .pipe(gulp.dest('dist/views/'));
 });
 
 gulp.task('bower', function() {
@@ -91,19 +80,17 @@ gulp.task('watch', ['lint'], function() {
   // Start live reload
   refresh.listen(livereloadport);
 
-  // Watch our scripts, and when they change run lint and browserify
-  gulp.watch(['src/js/*.js', 'src/js/**/*.js'],[
-    'lint',
-    'browserify'
-  ]);
-  // Watch our sass files
-
   gulp.watch(['src/css/**/*.css'], [
     'styles'
   ]);
 
   gulp.watch(['src/**/*.html'], [
     'views'
+  ]);
+
+  gulp.watch(['src/js/**/*.js'], [
+    'lint',
+    'scripts'
   ]);
 
   gulp.watch('./dist/**').on('change', refresh.changed);
