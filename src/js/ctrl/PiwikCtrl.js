@@ -1,5 +1,5 @@
 
-piwikapp.controller('PiwikCtrl', ['$scope', '$sce', function($scope, $sce) {
+piwikapp.controller('PiwikCtrl', ['$scope', '$sce', '$http', function($scope, $sce, $http) {
   $scope.period = piwikconfig.defaultPeriod;
 
   var defaultParameter = {
@@ -7,7 +7,8 @@ piwikapp.controller('PiwikCtrl', ['$scope', '$sce', function($scope, $sce) {
       'action': 'iframe',
       'period': $scope.period,
       'idSite': null,
-      'widget': '1'
+      'widget': '1',
+      'token_auth': piwikconfig.token_auth
     };
 
   var URLParameter = {};
@@ -16,13 +17,7 @@ piwikapp.controller('PiwikCtrl', ['$scope', '$sce', function($scope, $sce) {
   loadURLParameter();
   initTabsAndWidgets();
   initBackLink();
-
-  function initBackLink() {
-    $scope.backLink = '';
-    if(piwikconfig.showBackLink === true) {
-      $scope.backLink = URLParameter['pageUrl'];
-    }
-  }
+  loadSegments();
 
   function init() {
     var today = new Date();
@@ -36,6 +31,13 @@ piwikapp.controller('PiwikCtrl', ['$scope', '$sce', function($scope, $sce) {
       }
       setPiwikPages();
       setDisableStatusOfStartdate();
+  }
+
+  function initBackLink() {
+    $scope.backLink = '';
+    if(piwikconfig.showBackLink === true) {
+      $scope.backLink = URLParameter['pageUrl'];
+    }
   }
 
   function loadURLParameter() {
@@ -61,10 +63,9 @@ piwikapp.controller('PiwikCtrl', ['$scope', '$sce', function($scope, $sce) {
         for(var r = 0; r < widget.requiredParameter.length; r++) {
           var required = widget.requiredParameter[r];
           if(URLParameter.hasOwnProperty(required)) {
-            console.log("param exists");
             switch(required) {
               case 'pageUrl':
-                widget.parameter['segment'] = required+'=='+URLParameter[required];
+                widget.parameter['segment'] = required+'=@'+URLParameter[required];
                 break;
               default:
                 break;    
@@ -77,7 +78,6 @@ piwikapp.controller('PiwikCtrl', ['$scope', '$sce', function($scope, $sce) {
         }
         widget.src = null;
         widget.src = $sce.trustAsResourceUrl(buildUrl(widget.parameter));
-        console.log(widget.src);
       }
     }
   }
@@ -167,6 +167,19 @@ piwikapp.controller('PiwikCtrl', ['$scope', '$sce', function($scope, $sce) {
         // TODO: Error!
         console.log("No Piwik-Page-IDs found in config! Please set piwikconfig.piwikPages");
       }
+  }
+
+  function loadSegments() {
+    //http://demo.piwik.org/?module=API&method=SegmentEditor.getAll&idSite=7&format=JSON&token_auth=anonymous
+    if(piwikconfig.useSegments === true) {
+      $http({method:'GET', url:'http://piwik.gentics.com/?module=API&method=SegmentEditor.getAll&idSite=2&format=JSON&token_auth='+piwikconfig.token_auth})
+      .success(function(data, status) {
+        console.log("success: "+status);
+      })
+      .error(function(data, status) {
+        console.log("erro: "+status+" data: "+data);
+      });
+    }
   }
 
   function setDisableStatusOfStartdate() {

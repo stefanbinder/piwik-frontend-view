@@ -11,43 +11,45 @@
 <body>
 
 <div id="wrapper" ng-controller="PiwikCtrl">
-	<form>
+	<form class="piwik-select-form">
 		<fieldset>
 			<h1 translate="PIWIK_HEADLINE" class="headline"></h1>		
-			<div class="input-group">
+			<div class="input-group date-range">
 				<label translate="START_DATE"></label>
 				<input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="startdate" is-open="openedstart" datepicker-options="dateOptions" close-text="Close" ng-change="reloadTabs()" />
 				<span class="input-group-btn">
 	            	<button type="button" class="btn btn-default" ng-click="open($event,'start')"><i class="glyphicon glyphicon-calendar"></i></button>
 	          	</span>
 	        </div>
-	        <div class="input-group">
+	        <div class="input-group date-range">
 				<label translate="END_DATE"></label>
 				<input type="text" class="form-control" datepicker-popup="dd.MM.yyyy" ng-model="enddate" is-open="openedend" datepicker-options="dateOptions" close-text="Close" ng-change="reloadTabs()" />
 				<span class="input-group-btn">
 	            	<button type="button" class="btn btn-default" ng-click="open($event,'end')"><i class="glyphicon glyphicon-calendar"></i></button>
 	          	</span>
 	        </div>
-			<label translate="PERIOD"></label>
-			<select ng-model="period" ng-change="reloadTabs()">
-				<option value="range" selected="selected" translate="PERIOD_RANGE"></option>
-				<option value="day" translate="PERIOD_DAY"></option>
-				<option value="week" translate="PERIOD_WEEK"></option>
-				<option value="month" translate="PERIOD_MONTH"></option>
-			</select>
-			<label translate="WEBSITE"></label>
-			<select ng-model="piwikid" ng-change="reloadTabs()">
-				<option value="{{page.id}}" ng-repeat="page in piwikPages" ng-if="piwikPages.length > 1">{{page.name}}</option>
-			</select>
-			<label translate="SEGMENT"></label>
-			<select ng-model="segmentid" ng-change="reloadTabs()">
-				<option value="{{segment.id}}" ng-repeat="segment in allSegments">{{segment.name}}</option>
-			</select>
-			<label translate="LANGUAGE"></label>
-			<select ng-controller="LangCtrl" ng-model="lang">
-				<option value="de_DE">Deutsch</option>
-				<option value="en_US">Englisch</option>
-			</select>
+	        <div class="select-settings">
+				<label translate="PERIOD"></label>
+				<select ng-model="period" ng-change="reloadTabs()">
+					<option value="range" selected="selected" translate="PERIOD_RANGE"></option>
+					<option value="day" translate="PERIOD_DAY"></option>
+					<option value="week" translate="PERIOD_WEEK"></option>
+					<option value="month" translate="PERIOD_MONTH"></option>
+				</select>
+				<label translate="WEBSITE"></label>
+				<select ng-model="piwikid" ng-change="reloadTabs()">
+					<option value="{{page.id}}" ng-repeat="page in piwikPages" ng-if="piwikPages.length > 1">{{page.name}}</option>
+				</select>
+				<label translate="SEGMENT"></label>
+				<select ng-model="segmentid" ng-change="reloadTabs()">
+					<option value="{{segment.id}}" ng-repeat="segment in allSegments">{{segment.name}}</option>
+				</select>
+				<label translate="LANGUAGE"></label>
+				<select ng-controller="LangCtrl" ng-model="lang">
+					<option value="de_DE">Deutsch</option>
+					<option value="en_US">Englisch</option>
+				</select>
+			</div>
 			<a class="backLink" href="{{backLink}}" translate="BACK_LINK" ng-show="backLink"></a>
 		</fieldset>
 	</form>

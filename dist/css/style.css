@@ -1,11 +1,24 @@
-body {background-color: #fff; padding: 10px;}
+body {background-color: #f9f9f9; padding: 10px;}
 
-label { margin-right: 5px; }
+.piwik-select-form {
+	margin-bottom: 5px;
+}
+
+label { 
+	margin-right: 5px;
+}
+
+iframe {
+	border: 0px;
+}
 
 .input-group {
 	float: left;
 	display: block;
 	width: 20%;
+}
+.input-group.date-range {
+	width: 240px;
 }
 input.form-control {
 	width: 100px !important;
@@ -21,9 +34,7 @@ input.form-control {
 	margin: 5px 10px;
 }
 
-iframe {
-	border: 0px;
-}
+
 
 h1.headline {
 	font-size: 16pt;
@@ -40,5 +51,5 @@ h1.headline {
 	position: absolute;
 	top: 10px;
 	right: 10px;
-	
+
 }
