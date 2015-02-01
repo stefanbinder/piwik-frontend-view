@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf8" />
 <title>Piwik Frontend View</title>
-<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" type="text/css" />
+<link rel="stylesheet" href="css/bootstrap.css" type="text/css" />
 <link rel="stylesheet" href="css/style.css" type="text/css" media="all" />
 <link rel="stylesheet" href="css/print.css" type="text/css" media="print" />
 
@@ -53,28 +53,33 @@
 			<a class="backLink" href="{{backLink}}" translate="BACK_LINK" ng-show="backLink"></a>
 		</fieldset>
 	</form>
-	<div widgetdirective></div>
+	<ul class="nav nav-tabs hide-in-print">
+		<li role="presentation" ng-class="{active:$first}" ng-repeat="tab in tabs">
+			<a href="#{{tab.tabnamei18n}}" data-toggle="tab" translate="{{tab.tabnamei18n}}"></a>
+		</li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane fade in" ng-class="{active:$first}" id="{{tab.tabnamei18n}}" ng-repeat="tab in tabs">
+			<h4 translate="{{tab.detailinfo}}"></h4>
+			<div class="widget" ng-repeat="widget in tab.widgets">
+				<div ng-if="widget.error == 1">
+					<span translate="ERROR_MESSAGE"></span>
+					{{widget.message}}
+				</div>
+				<iframe ng-if="widget.error != 1" src="{{widget.src}}" width="100%" height="{{widget.iframeHeight}}"></iframe>
+			</div>
+		</div>
+	</div>
 </div>
 
-<script src="lib/angular/angular.min.js"></script>
+<script type="text/javascript" src="js/angular.min.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/angular-translate.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/ui-bootstrap-tpls.js"></script>
 
-<script src="lib/jquery/dist/jquery.min.js"></script>
-<script src="lib/angular-translate/angular-translate.js"></script>
-<script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
-
-<script src="lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-
-<script src="js/config.js"></script>
-
-<script src="js/app.js"></script>
-<script src="js/ctrl/PiwikCtrl.js"></script>
-<script src="js/ctrl/LangCtrl.js"></script>
-<script src="js/translations/lang.de_DE.js"></script>
-<script src="js/translations/lang.en_US.js"></script>
-
-<script src="js/directive/WidgetDirective.js"></script>
-
-<script src="js/main.js"></script>
+<script type="text/javascript" src="config.js" ></script>
+<script type="text/javascript" src="js/piwik.js"></script>
 
 
 </body>

@@ -8,11 +8,8 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     autoprefixer = require('gulp-autoprefixer'),
     bower = require('gulp-bower'),
-    plugins = require("gulp-load-plugins")({
-      pattern: ['gulp-*', 'gulp.*', 'main-bower-files'],
-      replaceString: /\bgulp[\-.]/
-    }),
-    dest = 'dist/js/';
+    uglify = require('gulp-uglifyjs'),
+    bowerfiles = require('bower-files');
 
 // Modules for webserver and livereload
 var express = require('express'),
@@ -20,6 +17,7 @@ var express = require('express'),
     livereload = require('connect-livereload'),
     livereloadport = 35729,
     serverport = 5000;
+
 
 // Set up an express server (not starting it yet)
 var server = express();
@@ -32,18 +30,21 @@ server.all('/*', function(req, res) {
   res.sendfile('index.html', { root: 'dist' });
 });
 
-var config = {
-     bowerDir: './src/lib/' 
-}
+
+var bowerJsFiles = ['bower_components/angular/angular.min.js',
+                    'bower_components/jquery/dist/jquery.min.js',
+                    'bower_components/angular-translate/angular-translate.js',
+                    'bower_components/bootstrap/dist/js/bootstrap.min.js',
+                    'bower_components/angular-bootstrap/ui-bootstrap-tpls.js'];
+
+var bowerCssFiles = ['bower_components/bootstrap/dist/css/bootstrap.css']
+
+
+gulp.task('default', ['dev', 'watch']);
 
 // Dev task
-gulp.task('dev', ['clean', 'scripts', 'views', 'styles', 'lint'], function() { });
+gulp.task('dev', ['bower', 'scripts', 'views', 'styles', 'lint'], function() { });
 
-// Clean task
-gulp.task('clean', function() {
-	gulp.src('./dist/views', { read: false }) // much faster
-  .pipe(rimraf({force: true}));
-});
 
 // JSHint task
 gulp.task('lint', function() {
@@ -59,8 +60,14 @@ gulp.task('styles', function() {
 });
 
 gulp.task('scripts', function() {
+  //gulp.src('src/js/**/*.js')
+  //.pipe(gulp.dest('dist/js'));
   gulp.src('src/js/**/*.js')
-  .pipe(gulp.dest('dist/js'));
+    .pipe(uglify('piwik.js', {outSourceMap: true, mangle: false}))
+    .pipe(gulp.dest('dist/js/'));
+
+  gulp.src('src/config.js')
+    .pipe(gulp.dest('dist/'));
 });
 
 // Views task
@@ -70,9 +77,15 @@ gulp.task('views', function() {
 });
 
 gulp.task('bower', function() {
-  return bower()
-    .pipe(gulp.dest('dist/lib/'))
+  gulp.src(bowerJsFiles)
+    //.pipe(uglify('lib.js', {outSourceMap: true, mangle: false}))
+    .pipe(gulp.dest('dist/js'));
+
+  gulp.src(bowerCssFiles)
+    .pipe(gulp.dest('dist/css'));
+
 });
+
 
 gulp.task('watch', ['lint'], function() {
   // Start webserver
@@ -97,4 +110,5 @@ gulp.task('watch', ['lint'], function() {
 
 });
 
-gulp.task('default', ['bower', 'dev', 'watch']);
+
+
