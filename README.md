@@ -3,6 +3,7 @@ piwik-frontend-view
 
 To include the Piwik frontend peview link to your aloha-sidebar, you can use following code to adding it:
 
+```
 <script type="text/javascript">
 
 (function (Aloha) {
@@ -17,3 +18,4 @@ Aloha.Sidebar.right.addPanel({
 }(window.Aloha));
 
 </script>
+```
